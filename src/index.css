@@ -1,0 +1,501 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  AURORA DREAMSCAPE - 极致视觉设计系统                          ║
+  ║  灵感: 北极光 × 水晶折射 × 流体动态 × 赛博朋克                  ║
+  ╚═══════════════════════════════════════════════════════════════╝
+*/
+
+@layer base {
+  :root {
+    /* 🌈 北极光配色系统 - Aurora Borealis Palette */
+    --aurora-cyan: 189 97% 65%;
+    /* 冰川青 */
+    --aurora-violet: 271 91% 75%;
+    /* 紫罗兰 */
+    --aurora-pink: 330 85% 70%;
+    /* 极光粉 */
+    --aurora-emerald: 158 64% 52%;
+    /* 翡翠绿 */
+    --aurora-gold: 45 93% 58%;
+    /* 星辰金 */
+
+    /* 🎨 主色调 - 梦幻渐变 */
+    --background: 220 25% 97%;
+    --foreground: 220 20% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 12%;
+
+    --primary: 271 91% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 18% 94%;
+    --secondary-foreground: 220 20% 12%;
+
+    --muted: 220 18% 94%;
+    --muted-foreground: 220 15% 45%;
+
+    --accent: 330 85% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 271 91% 65%;
+
+    --radius: 1rem;
+
+    /* 🛒 电商转化色 - Commerce Conversion Colors */
+    --commerce-accent: 14 100% 57%;
+    /* 活力橙 - CTA按钮 */
+    --commerce-accent-foreground: 0 0% 100%;
+    --commerce-price: 0 84% 60%;
+    /* 醒目红 - 价格显示 */
+
+    /* 💎 玻璃态效果 */
+    --glass-bg: 0 0% 100% / 0.7;
+    --glass-border: 0 0% 100% / 0.2;
+    --glass-shadow: 0 8px 32px 0 hsl(220 20% 12% / 0.1);
+
+    /* 🌊 流体渐变 */
+    --gradient-aurora: linear-gradient(135deg,
+        hsl(189 97% 65%) 0%,
+        hsl(271 91% 75%) 25%,
+        hsl(330 85% 70%) 50%,
+        hsl(158 64% 52%) 75%,
+        hsl(45 93% 58%) 100%);
+
+    --gradient-primary: linear-gradient(135deg,
+        hsl(271 91% 65%) 0%,
+        hsl(330 85% 70%) 100%);
+
+    --gradient-accent: linear-gradient(135deg,
+        hsl(330 85% 70%) 0%,
+        hsl(45 93% 58%) 100%);
+
+    --gradient-hero: radial-gradient(ellipse at top,
+        hsl(271 91% 75% / 0.15) 0%,
+        transparent 50%),
+      radial-gradient(ellipse at bottom right,
+        hsl(189 97% 65% / 0.15) 0%,
+        transparent 50%);
+
+    --gradient-mesh:
+      radial-gradient(at 27% 37%, hsl(271 91% 75% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 97% 21%, hsl(189 97% 65% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, hsl(330 85% 70% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, hsl(158 64% 52% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, hsl(45 93% 58% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, hsl(271 91% 75% / 0.12) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, hsl(189 97% 65% / 0.12) 0px, transparent 50%);
+
+    /* ✨ 光影系统 */
+    --shadow-sm: 0 2px 8px hsl(220 20% 12% / 0.04);
+    --shadow-md: 0 4px 16px hsl(220 20% 12% / 0.08);
+    --shadow-lg: 0 8px 32px hsl(220 20% 12% / 0.12);
+    --shadow-xl: 0 16px 64px hsl(220 20% 12% / 0.16);
+    --shadow-glow-violet: 0 0 40px hsl(271 91% 65% / 0.4);
+    --shadow-glow-cyan: 0 0 40px hsl(189 97% 65% / 0.4);
+    --shadow-glow-pink: 0 0 40px hsl(330 85% 70% / 0.4);
+
+    /* 🎭 动画曲线 */
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 271 91% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 15% 88%;
+    --sidebar-ring: 271 91% 65%;
+  }
+
+  .dark {
+    /* 🌃 暗黑模式 - 赛博朋克美学 */
+    --background: 220 25% 8%;
+    --foreground: 220 18% 92%;
+
+    --card: 220 22% 11%;
+    --card-foreground: 220 18% 92%;
+
+    --popover: 220 22% 11%;
+    --popover-foreground: 220 18% 92%;
+
+    --primary: 271 91% 70%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 220 18% 92%;
+
+    --muted: 220 20% 15%;
+    --muted-foreground: 220 15% 60%;
+
+    --accent: 330 85% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --border: 220 18% 18%;
+    --input: 220 18% 18%;
+    --ring: 271 91% 70%;
+
+    /* 💎 暗黑玻璃态 */
+    --glass-bg: 220 22% 11% / 0.6;
+    --glass-border: 0 0% 100% / 0.1;
+    --glass-shadow: 0 8px 32px 0 hsl(0 0% 0% / 0.4);
+
+    /* 🌊 暗黑流体渐变 */
+    --gradient-hero: radial-gradient(ellipse at top,
+        hsl(271 91% 35% / 0.2) 0%,
+        transparent 50%),
+      radial-gradient(ellipse at bottom right,
+        hsl(189 97% 35% / 0.2) 0%,
+        transparent 50%);
+
+    --gradient-mesh:
+      radial-gradient(at 27% 37%, hsl(271 91% 45% / 0.15) 0px, transparent 50%),
+      radial-gradient(at 97% 21%, hsl(189 97% 45% / 0.15) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, hsl(330 85% 45% / 0.15) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, hsl(158 64% 35% / 0.15) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, hsl(45 93% 45% / 0.15) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, hsl(271 91% 45% / 0.15) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, hsl(189 97% 45% / 0.15) 0px, transparent 50%);
+
+    --sidebar-background: 220 25% 8%;
+    --sidebar-foreground: 220 18% 92%;
+    --sidebar-primary: 271 91% 70%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 220 18% 92%;
+    --sidebar-border: 220 18% 18%;
+    --sidebar-ring: 271 91% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* 🎨 背景图案 */
+  .bg-grid-pattern {
+    background-image:
+      linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .bg-dots-pattern {
+    background-image: radial-gradient(circle, hsl(var(--border)) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-mesh-gradient {
+    background: var(--gradient-mesh);
+  }
+
+  /* 💎 玻璃态效果 */
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-strong {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* ✨ 发光效果 */
+  .glow-violet {
+    box-shadow: var(--shadow-glow-violet);
+  }
+
+  .glow-cyan {
+    box-shadow: var(--shadow-glow-cyan);
+  }
+
+  .glow-pink {
+    box-shadow: var(--shadow-glow-pink);
+  }
+
+  /* 🌈 渐变文字 */
+  .text-gradient-aurora {
+    background: var(--gradient-aurora);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* 🎭 动画关键帧 */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-from-bottom {
+    from {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in-from-top {
+    from {
+      opacity: 0;
+      transform: translateY(-2rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+
+    50% {
+      opacity: 0.8;
+      filter: brightness(1.2);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  @keyframes gradient-shift {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes aurora-flow {
+    0% {
+      background-position: 0% 50%;
+      filter: hue-rotate(0deg);
+    }
+
+    50% {
+      background-position: 100% 50%;
+      filter: hue-rotate(30deg);
+    }
+
+    100% {
+      background-position: 0% 50%;
+      filter: hue-rotate(0deg);
+    }
+  }
+
+  /* 🎬 动画类 */
+  .animate-in {
+    animation-fill-mode: both;
+  }
+
+  .fade-in {
+    animation: fade-in 0.6s var(--ease-smooth);
+  }
+
+  .slide-in-from-bottom-4 {
+    animation: slide-in-from-bottom 0.8s var(--ease-smooth);
+  }
+
+  .slide-in-from-top-4 {
+    animation: slide-in-from-top 0.8s var(--ease-smooth);
+  }
+
+  .scale-in {
+    animation: scale-in 0.6s var(--ease-bounce);
+  }
+
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        hsl(var(--primary) / 0.1) 50%,
+        transparent 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite;
+  }
+
+  .gradient-shift {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .aurora-flow {
+    background-size: 400% 400%;
+    animation: aurora-flow 15s ease infinite;
+  }
+
+  .duration-300 {
+    animation-duration: 300ms;
+  }
+
+  .duration-500 {
+    animation-duration: 500ms;
+  }
+
+  .duration-700 {
+    animation-duration: 700ms;
+  }
+
+  .duration-1000 {
+    animation-duration: 1000ms;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  /* 🎯 交互效果 */
+  .interactive-card {
+    transition: all 0.4s var(--ease-smooth);
+  }
+
+  .interactive-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .interactive-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s var(--ease-smooth);
+  }
+
+  .interactive-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .interactive-button:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .interactive-button:active {
+    transform: scale(0.95);
+  }
+}
