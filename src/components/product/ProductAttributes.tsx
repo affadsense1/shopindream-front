@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -42,9 +42,20 @@ const DEFAULT_SIZES = {
   ]
 };
 
-export const ProductAttributes = ({ attributes }: ProductAttributesProps) => {
+export const ProductAttributes = ({ attributes, onSelect }: ProductAttributesProps & { onSelect?: (attrs: Record<string, string>) => void }) => {
   const [selectedSize, setSelectedSize] = useState<string>("One size - default in the photo");
   const hasCustomAttributes = attributes && Object.keys(attributes).length > 0;
+
+  // Notify parent of attributes on mount or change
+  useEffect(() => {
+    if (onSelect) {
+      if (hasCustomAttributes) {
+        onSelect(attributes as Record<string, string>);
+      } else {
+        onSelect({ "Default Size": selectedSize });
+      }
+    }
+  }, [hasCustomAttributes, attributes, selectedSize, onSelect]);
 
   if (hasCustomAttributes) {
     // Display custom attributes

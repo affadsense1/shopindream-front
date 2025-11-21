@@ -28,11 +28,21 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+
   // Generate consistent random sales number for detail page (10-200 range)
   const generateDetailSales = (goodsId: number) => {
     const seed = goodsId * 9301 + 49297;
     const random = (seed % 233280) / 233280;
     return Math.floor(random * 191) + 10; // Random between 10-200
+  };
+
+  const handleAttributeSelect = (attrs: Record<string, string>) => {
+    setSelectedAttributes(prev => {
+      // Simple deep equality check to prevent infinite loops
+      if (JSON.stringify(prev) === JSON.stringify(attrs)) return prev;
+      return attrs;
+    });
   };
 
   useEffect(() => {
@@ -116,6 +126,7 @@ export default function ProductDetail() {
       goods_name: product.goods_name,
       goods_image: product.goods_image,
       price: displayPrice,
+      attributes: selectedAttributes,
     }, quantity);
   };
 
@@ -211,8 +222,8 @@ export default function ProductDetail() {
                     <Star
                       key={i}
                       className={`w-5 h-5 ${i < Math.floor(adjustedScore)
-                          ? "fill-amber-400 text-amber-400"
-                          : "fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600"
+                        ? "fill-amber-400 text-amber-400"
+                        : "fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600"
                         }`}
                     />
                   )
@@ -266,7 +277,7 @@ export default function ProductDetail() {
             <Separator />
 
             {/* Product Attributes */}
-            <ProductAttributes attributes={product.attr} />
+            <ProductAttributes attributes={product.attr} onSelect={handleAttributeSelect} />
 
             <Separator />
 

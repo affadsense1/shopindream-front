@@ -93,6 +93,7 @@ export default function Checkout() {
           price: item.price,
           quantity: item.quantity,
           subtotal: item.price * item.quantity,
+          attributes: item.attributes,
         })),
         subtotal: totalAmount,
         shipping_fee: totalAmount >= 50 ? 0 : 10,
@@ -120,8 +121,8 @@ export default function Checkout() {
         });
 
         setTimeout(() => {
-          navigate("/");
-        }, 2000);
+          navigate(`/payment/${orderId}`);
+        }, 1500);
       } else {
         throw new Error(result.message || "Failed to place order");
       }
@@ -312,6 +313,15 @@ export default function Checkout() {
                       <div key={index} className="flex justify-between py-2">
                         <div className="flex-1">
                           <p className="font-medium text-sm">{item.goods_name}</p>
+                          {item.attributes && Object.keys(item.attributes).length > 0 && (
+                            <div className="text-xs text-muted-foreground my-1">
+                              {Object.entries(item.attributes).map(([key, value]) => (
+                                <span key={key} className="block">
+                                  {value}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                           <p className="text-xs text-muted-foreground">
                             ${item.price.toFixed(2)} × {item.quantity}
                           </p>

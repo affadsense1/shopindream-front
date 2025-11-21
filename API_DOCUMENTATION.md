@@ -76,6 +76,8 @@ Authorization: Bearer {token}  (可选，如果用户已登录)
 | `goods_image` | string | add时必填 | 商品图片URL |
 | `price` | number | add时必填 | 商品单价 |
 | `quantity` | integer | add/update时必填 | 商品数量 |
+| `attributes` | object | 否 | 商品属性，如 `{"Size": "L", "Color": "Red"}` |
+| `item_id` | string | remove/update时推荐 | 唯一购物车项ID（用于区分同商品不同属性） |
 
 ### 成功响应
 
@@ -91,6 +93,7 @@ Authorization: Bearer {token}  (可选，如果用户已登录)
     "cart_id": 789,
     "goods_id": 12345,
     "quantity": 2,
+    "attributes": {"Size": "L"},
     "updated_at": "2024-01-15 10:30:00"
   }
 }
@@ -106,11 +109,13 @@ Authorization: Bearer {token}  (可选，如果用户已登录)
     "items": [
       {
         "cart_id": 789,
+        "item_id": "12345-{\"Size\":\"L\"}",
         "goods_id": 12345,
         "goods_name": "天然水晶手链女",
         "goods_image": "https://example.com/image.jpg",
         "price": 68.82,
         "quantity": 2,
+        "attributes": {"Size": "L"},
         "subtotal": 137.64
       }
     ],
@@ -182,14 +187,8 @@ Authorization: Bearer {token}  (可选，如果用户已登录)
       "goods_name": "天然水晶手链女",
       "price": 68.82,
       "quantity": 2,
+      "attributes": {"Size": "L"},
       "subtotal": 137.64
-    },
-    {
-      "goods_id": 67890,
-      "goods_name": "玉石手镯",
-      "price": 99.99,
-      "quantity": 1,
-      "subtotal": 99.99
     }
   ],
   "subtotal": 237.63,
@@ -205,20 +204,8 @@ Authorization: Bearer {token}  (可选，如果用户已登录)
 | `user_id` | integer | 否 | 用户ID（登录用户） |
 | `email` | string | 是 | 联系邮箱 |
 | `shipping_address` | object | 是 | 收货地址信息 |
-| `shipping_address.first_name` | string | 是 | 名 |
-| `shipping_address.last_name` | string | 是 | 姓 |
-| `shipping_address.phone` | string | 否 | 联系电话 |
-| `shipping_address.country` | string | 是 | 国家 |
-| `shipping_address.state` | string | 否 | 州/省 |
-| `shipping_address.city` | string | 是 | 城市 |
-| `shipping_address.address` | string | 是 | 详细地址 |
-| `shipping_address.zip_code` | string | 是 | 邮政编码 |
 | `items` | array | 是 | 订单商品列表 |
-| `items[].goods_id` | integer | 是 | 商品ID |
-| `items[].goods_name` | string | 是 | 商品名称 |
-| `items[].price` | number | 是 | 商品单价 |
-| `items[].quantity` | integer | 是 | 购买数量 |
-| `items[].subtotal` | number | 是 | 小计金额 |
+| `items[].attributes` | object | 否 | 商品属性 |
 | `subtotal` | number | 是 | 商品总金额 |
 | `shipping_fee` | number | 是 | 运费 |
 | `total` | number | 是 | 订单总金额 |
@@ -238,50 +225,177 @@ Authorization: Bearer {token}  (可选，如果用户已登录)
     "status": "pending",
     "total": 247.63,
     "created_at": "2024-01-15 10:30:00",
-    "payment_url": "https://payment.example.com/pay?order_id=ORD20240115103000123"
+    "payment_url": "/payment/ORD20240115103000123"
   },
   "order_id": "ORD20240115103000123"
 }
+
+### 获取订单详情
+
+#### 接口地址
+```
+GET https://api.gmailjc.com/public/api/cart/order.php?order_id={order_id}
 ```
 
-### 响应字段说明
+#### 功能说明
+根据订单ID获取订单详情，用于支付页面显示
 
-| 字段名 | 类型 | 说明 |
-|--------|------|------|
-| `order_id` | string | 订单ID |
-| `order_no` | string | 订单编号 |
-| `status` | string | 订单状态：`pending`(待支付)/`paid`(已支付)/`shipped`(已发货)/`completed`(已完成) |
-| `total` | number | 订单总金额 |
-| `created_at` | string | 订单创建时间 |
-| `payment_url` | string | 支付链接（可选） |
+#### 请求参数
+| 字段名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| `order_id` | string | 是 | 订单ID |
 
-### 错误响应
-
-**状态码**: 400/401/500
-
+#### 成功响应
 ```json
 {
-  "status": 400,
-  "code": 400,
-  "message": "库存不足",
+  "status": 200,
+  "code": 200,
+  "message": "success",
   "data": {
-    "error": "insufficient_stock",
-    "goods_id": 12345,
-    "available_stock": 1,
-    "requested_quantity": 2
+    "order_id": "ORD20240115103000123",
+    "order_no": "202401151030001234567",
+    "status": "pending",
+    "total": 247.63,
+    "email": "user@example.com",
+    "items": [
+      {
+        "goods_id": 12345,
+        "goods_name": "天然水晶手链女",
+        "price": 68.82,
+        "quantity": 2,
+        "attributes": {"Size": "L"},
+        "subtotal": 137.64
+      }
+    ],
+    "created_at": "2024-01-15 10:30:00"
+  }
+}
+```
+```
+
+---
+
+## 支付 API
+
+### 获取支付方式
+
+#### 接口地址
+```
+GET https://api.gmailjc.com/public/api/payment/methods.php
+```
+### 支付处理
+
+#### 接口地址
+```
+POST https://api.shopindream.shop/public/api/payment/process.php
+```
+
+#### 功能说明
+处理订单支付请求
+
+#### 请求参数
+| 字段名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| `order_id` | string | 是 | 订单ID |
+| `payment_method` | string | 是 | 支付方式 (stripe, paypal, crypto) |
+| `payment_details` | object | 是 | 支付详情对象 |
+
+**payment_details 对象结构 (Stripe):**
+| 字段名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| `country` | string | 是 | 国家/地区 |
+| `card_number` | string | 是 | 卡号 |
+| `card_expiry` | string | 是 | 有效期 (MM/YY) |
+| `card_cvc` | string | 是 | CVC安全码 |
+| `card_holder` | string | 是 | 持卡人姓名 |
+
+**请求示例:**
+```json
+{
+  "order_id": "ORD20251122040824796",
+  "payment_method": "stripe",
+  "payment_details": {
+    "country": "United States",
+    "card_number": "424242424242424242",
+    "card_expiry": "12/25",
+    "card_cvc": "123",
+    "card_holder": "John Doe"
   }
 }
 ```
 
-### 常见错误码
+#### 成功响应
+```json
+{
+  "code": 200,
+  "message": "Payment successful",
+  "data": {
+    "transaction_id": "txn_1234567890"
+  }
+}
+```
+#### 功能说明
+获取当前可用的支付方式列表
 
-| 错误码 | 说明 |
-|--------|------|
-| 400 | 请求参数错误 |
-| 401 | 未登录或token无效 |
-| 402 | 库存不足 |
-| 403 | 商品已下架 |
-| 500 | 服务器内部错误 |
+#### 响应示例
+```json
+{
+  "status": 200,
+  "code": 200,
+  "data": [
+    {
+      "id": "stripe",
+      "name": "Credit/Debit Card",
+      "type": "credit_card",
+      "icon": "card",
+      "enabled": true
+    },
+    {
+      "id": "paypal",
+      "name": "PayPal",
+      "type": "paypal",
+      "icon": "paypal",
+      "enabled": true
+    },
+    {
+      "id": "crypto",
+      "name": "Cryptocurrency",
+      "type": "crypto",
+      "icon": "bitcoin",
+      "enabled": true
+    }
+  ]
+}
+```
+
+### 处理支付
+
+#### 接口地址
+```
+POST https://api.gmailjc.com/public/api/payment/process.php
+```
+
+#### 请求参数
+```json
+{
+  "order_id": "ORD20240115103000123",
+  "payment_method": "stripe",
+  "payment_details": {
+    "card_number": "...",
+    "expiry": "...",
+    "cvc": "..."
+  }
+}
+```
+
+#### 成功响应
+```json
+{
+  "status": 200,
+  "code": 200,
+  "message": "Payment successful"
+}
+```
 
 ---
 

@@ -8,7 +8,7 @@ import { useCart } from "@/contexts/CartContext";
 export const CartSheet = () => {
   const navigate = useNavigate();
   const { items, itemCount, totalAmount, removeFromCart, updateQuantity } = useCart();
-  
+
   const freeShippingThreshold = 50;
   const shipping = totalAmount >= freeShippingThreshold ? 0 : 10;
 
@@ -32,7 +32,7 @@ export const CartSheet = () => {
         <SheetHeader>
           <SheetTitle>Shopping Cart ({itemCount})</SheetTitle>
         </SheetHeader>
-        
+
         <div className="mt-8 space-y-4">
           {items.length === 0 ? (
             <div className="text-center py-12">
@@ -43,7 +43,7 @@ export const CartSheet = () => {
             <>
               <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                 {items.map((item) => (
-                  <div key={item.goods_id} className="flex gap-4 p-3 bg-secondary/20 rounded-lg">
+                  <div key={item.id} className="flex gap-4 p-3 bg-secondary/20 rounded-lg">
                     <img
                       src={item.goods_image || "/placeholder.svg"}
                       alt={item.goods_name}
@@ -56,6 +56,15 @@ export const CartSheet = () => {
                       <h4 className="font-medium text-sm line-clamp-2 mb-1">
                         {item.goods_name}
                       </h4>
+                      {item.attributes && Object.keys(item.attributes).length > 0 && (
+                        <div className="text-xs text-muted-foreground mb-1">
+                          {Object.entries(item.attributes).map(([key, value]) => (
+                            <span key={key} className="block">
+                              {value}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       <p className="text-primary font-bold mb-2">
                         ${item.price.toFixed(2)}
                       </p>
@@ -64,7 +73,7 @@ export const CartSheet = () => {
                           variant="outline"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => updateQuantity(item.goods_id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         >
                           <Minus className="w-3 h-3" />
                         </Button>
@@ -75,7 +84,7 @@ export const CartSheet = () => {
                           variant="outline"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => updateQuantity(item.goods_id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         >
                           <Plus className="w-3 h-3" />
                         </Button>
@@ -85,16 +94,16 @@ export const CartSheet = () => {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => removeFromCart(item.goods_id)}
+                      onClick={() => removeFromCart(item.id)}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 ))}
               </div>
-              
+
               <Separator />
-              
+
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
@@ -119,7 +128,7 @@ export const CartSheet = () => {
                   <span>${(totalAmount + shipping).toFixed(2)}</span>
                 </div>
               </div>
-              
+
               <Button className="w-full" size="lg" onClick={handleCheckout}>
                 Proceed to Checkout
               </Button>
